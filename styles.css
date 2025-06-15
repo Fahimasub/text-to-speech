@@ -1,0 +1,226 @@
+/* default margins and paddings, apply Poppins font globally */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* body styles */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a237e, #d81b60);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* container for the app */
+.container {
+    width: 200%;
+    max-width: 550px;
+    padding: 0rem;
+}
+
+/* styling for the main app container */
+.app-container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.app-container:hover {
+    transform: translateY(-5px);
+}
+
+/* styling for the heading with some text effect */
+.headings-container h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fff, #f0f0f0);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 600;
+}
+
+.headings-container h3 {
+    font-size: 1.1rem;
+    font-weight: 400;
+    opacity: 0.9;
+    margin-bottom: 2rem;
+}
+
+/* interaction elements */
+.interaction-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Textarea styling */
+.text-control {
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    resize: none;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.text-control:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.text-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Styling for error */
+.error-para {
+    color: #ff9a9a;
+    min-height: 24px;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+}
+
+/* Flex container for buttons */
+.controls {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+/* General button styling*/
+.btn {
+    flex: 1;
+    padding: 1rem;
+    background: linear-gradient(90deg, #F4244C, #F57D4E);
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(244, 36, 76, 0.3);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(244, 36, 76, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* secondary button style */
+.btn-secondary {
+    background: linear-gradient(90deg, #3949ab, #5e35b1);
+    box-shadow: 0 4px 15px rgba(57, 73, 171, 0.3);
+}
+
+.btn-secondary:hover {
+    box-shadow: 0 8px 20px rgba(57, 73, 171, 0.4);
+}
+
+/* container for voice selection */
+.voice-options {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+/* voice selector styles */
+.voice-selector {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.voice-selector:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.voice-selector option {
+    background-color: #2c2c2c;
+    color: #fff;
+}
+
+/* styling for indicator during speech */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.status-indicator.active {
+    opacity: 1;
+}
+
+/* pulsing animation for indicator dot */
+.pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4caf50;
+    margin-right: 8px;
+    animation: pulse 1.5s infinite;
+}
+
+/* keyframes for pulsing some animation */
+@keyframes pulse {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+}
+
+/* responsive for smaller screens */
+@media (max-width: 600px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .app-container {
+        padding: 1.5rem;
+    }
+    
+    .headings-container h1 {
+        font-size: 1.8rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+    }
+}
