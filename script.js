@@ -1,56 +1,88 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text to Speech Converter</title>
-    <!-- link to google fonts for oppins font family to enhance typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-    <!-- link to styles.css -->
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- main container -->
-    <div class="container">
-        <div class="app-container">
-            <!-- heading section, title and subtitle -->
-            <div class="headings-container">
-                <h1>Text to Speech</h1>
-                <h3>Enter text and convert it into natural speech</h3>
-            </div>
-            <!--interaction section with textarea, voice selector, and buttons-->
-            <div class="interaction-container">
-                <textarea id="textToConvert" placeholder="Type or paste your text here..." cols="35" rows="6" class="text-control"></textarea>
-                <!--selecting voices -->
-                <div class="voice-options">
-                    <select id="voiceSelector" class="voice-selector">
-                        <option value="">Default Voice</option>
-                    </select>
-                </div>
-                <!--displaying error messages-->
-                <p class="error-para" id="errorMessage"></p>
-                <!--control buttons: play and stop-->
-                <div class="controls">
-                    <button class="btn" id="convertBtn">
-                        Play Speech
-                    </button>
-                    <button class="btn btn-secondary" id="stopBtn">
-                        Stop
-                    </button>
-                </div>
-                <!-- indicator for active speech-->
-                <div class="status-indicator" id="statusIndicator">
-                    <div class="pulse"></div>
-                    <span>Speaking...</span>
-                </div>
-                <!-- Added credit line -->
-                <div style="margin-top: 2rem; font-size: 0.8rem; opacity: 0.7;">
-                    Made by <a href="https://github.com/fahimasub" target="_blank" style="color: #fff; text-decoration: none;">Fahima Subhani</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- linked to js file -->
-    <script src="script.js"></script>
-</body>
-</html>
+// initialize app
+document.addEventListener('DOMContentLoaded', function() {
+    const textArea = document.getElementById("textToConvert");
+    const convertBtn = document.getElementById("convertBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const errorMessage = document.getElementById("errorMessage");
+    const voiceSelector = document.getElementById("voiceSelector");
+    const statusIndicator = document.getElementById("statusIndicator");
+    
+    // Web Speech API
+    const speechSynth = window.speechSynthesis;
+    let voices = [];
+    
+    // function to populate the voice selector
+    function populateVoiceList() {
+        voices = speechSynth.getVoices();
+        
+        // clear existing options and add default option
+        voiceSelector.innerHTML = '<option value="">Default Voice</option>';
+        
+        // adding each available voice
+        voices.forEach((voice, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = `${voice.name} (${voice.lang})`;
+            voiceSelector.appendChild(option);
+        });
+    }
+    
+    // voice loading in some browsers
+    if (speechSynth.onvoiceschanged !== undefined) {
+        speechSynth.onvoiceschanged = populateVoiceList;
+    }
+    
+    // populate voice list
+    populateVoiceList();
+    
+    // function to convert 'text to speech'
+    function playSpeech() {
+        const enteredText = textArea.value;
+        
+        if (!enteredText.trim().length) {
+            errorMessage.textContent = "Please enter some text to convert to speech";
+            return;
+        }
+        
+        speechSynth.cancel();
+        errorMessage.textContent = "";
+        
+        // creating a new speech utterance
+        const utterance = new SpeechSynthesisUtterance(enteredText);
+
+        if (voiceSelector.value !== "") {
+            utterance.voice = voices[parseInt(voiceSelector.value)];
+        }
+        
+        // indicator during speech
+        statusIndicator.classList.add('active');
+        
+        utterance.onend = function() {
+            statusIndicator.classList.remove('active');
+        };
+        
+        // handle speech error
+        utterance.onerror = function() {
+            errorMessage.textContent = "An error occurred while playing speech";
+            statusIndicator.classList.remove('active');
+        };
+
+        speechSynth.speak(utterance);
+    }
+    
+    // function for stopping speech
+    function stopSpeech() {
+        speechSynth.cancel();
+        statusIndicator.classList.remove('active');
+    }
+    
+    convertBtn.addEventListener('click', playSpeech);
+    stopBtn.addEventListener('click', stopSpeech);
+    
+    // keyboard shortcut 'Ctrl + Enter' to trigger speech
+    textArea.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+            playSpeech();
+        }
+    });
+});
